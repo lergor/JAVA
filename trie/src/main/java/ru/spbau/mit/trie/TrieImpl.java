@@ -30,6 +30,7 @@ public class TrieImpl implements Trie {
             return false;
         }
         goAndChangeTerminal(element, false);
+        Node f = root;
         checkAndDelete(element);
         return true;
     }
@@ -56,7 +57,7 @@ public class TrieImpl implements Trie {
                 if(!adding) {
                     return null;
                 }
-                currentNode.setState(letter, true);
+                currentNode.setState(letter, adding);
             }
             currentNode = currentNode.getNextNode(letter);
         }
@@ -71,8 +72,8 @@ public class TrieImpl implements Trie {
         Node currentNode = root;
         for (int i = 0; i < element.length(); i++) {
             char letter = element.charAt(i);
-                currentNode.changeStringsCount(num);
-                currentNode = currentNode.getNextNode(letter);
+            currentNode.changeStringsCount(num);
+            currentNode = currentNode.getNextNode(letter);
         }
         currentNode.setTerminalState(adding);
     }

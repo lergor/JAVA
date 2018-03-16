@@ -52,7 +52,7 @@ public class Node {
 
     public boolean checkAndDeleteNextNode(char letter){
         Node nextNode = next[getIndex(letter)];
-        if( nextNode != null && nextNode.stringsCount == 0) {
+        if(nextNode != null && nextNode.stringsCount == 0 && !nextNode.isTerminal()) {
             next[getIndex(letter)] = null;
             return true;
         }

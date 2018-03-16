@@ -1,7 +1,5 @@
 package ru.spbau.mit.trie;
 
-import junit.framework.TestCase;
-import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
@@ -56,7 +54,16 @@ public class TrieImplTest {
             assertFalse(testTrie.contains(stringsForTest[i]));
             assertEquals(testTrie.size(), 10 - i);
         }
+        assertEquals(testTrie.size(), 0);
 
+        assertTrue(testTrie.add("abc"));
+        assertTrue(testTrie.add("ab"));
+        assertTrue(testTrie.contains("abc"));
+        assertTrue(testTrie.contains("ab"));
+        assertEquals(testTrie.size(), 2);
+        assertTrue(testTrie.remove("abc"));
+        assertTrue(testTrie.contains("ab"));
+        assertTrue(testTrie.remove("ab"));
         assertEquals(testTrie.size(), 0);
     }
 
@@ -92,4 +99,5 @@ public class TrieImplTest {
         assertTrue(testTrie.remove("grandfather"));
         assertEquals(testTrie.howManyStartsWithPrefix("grand"), 0);
     }
+
 }
