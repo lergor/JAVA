@@ -30,6 +30,7 @@ public class TrieImpl implements Trie {
             return false;
         }
         goAndChangeTerminal(element, false);
+        checkAndDelete(element);
         return true;
     }
 
