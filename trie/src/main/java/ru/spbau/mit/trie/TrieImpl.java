@@ -6,9 +6,9 @@ public class TrieImpl implements Trie {
 
     @Override
     public boolean add(String element) {
-        if(element.length() > 0) {
+        if (element.length() > 0) {
             Node lastLetterNode = goToNode(element, true);
-            if(lastLetterNode.isTerminal()) {
+            if (lastLetterNode.isTerminal()) {
                 return false;
             }
             goAndChangeTerminal(element, true);
@@ -26,11 +26,10 @@ public class TrieImpl implements Trie {
     @Override
     public boolean remove(String element) {
         Node lastLetterNode = goToNode(element, false);
-        if(lastLetterNode == null || !lastLetterNode.isTerminal()) {
+        if (lastLetterNode == null || !lastLetterNode.isTerminal()) {
             return false;
         }
         goAndChangeTerminal(element, false);
-        Node f = root;
         checkAndDelete(element);
         return true;
     }
@@ -43,7 +42,7 @@ public class TrieImpl implements Trie {
     @Override
     public int howManyStartsWithPrefix(String prefix) {
         Node lastLetterNode = goToNode(prefix, false);
-        if(lastLetterNode == null) {
+        if (lastLetterNode == null) {
             return 0;
         }
         return lastLetterNode.strings();
@@ -53,11 +52,11 @@ public class TrieImpl implements Trie {
         Node currentNode = root;
         for (int i = 0; i < element.length(); i++) {
             char letter = element.charAt(i);
-            if( currentNode.getNextNode(letter) == null) {
-                if(!adding) {
+            if (currentNode.getNextNode(letter) == null) {
+                if (!adding) {
                     return null;
                 }
-                currentNode.setState(letter, adding);
+                currentNode.addState(letter);
             }
             currentNode = currentNode.getNextNode(letter);
         }
@@ -65,10 +64,7 @@ public class TrieImpl implements Trie {
     }
 
     private void goAndChangeTerminal(String element, boolean adding) {
-        int num = 1;
-        if(!adding) {
-            num = -1;
-        }
+        final int num = adding ? 1 : -1;
         Node currentNode = root;
         for (int i = 0; i < element.length(); i++) {
             char letter = element.charAt(i);

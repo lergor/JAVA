@@ -18,86 +18,86 @@ public class TrieImplTest {
             "grandfather", "grandmother", "grandparents"};
 
     @Test
-    //add - size - contains - add
-    public void test1() {
+    public void AddSizeContainsAddTest() {
         assertFalse(testTrie.add(""));
-        assertEquals(testTrie.size(), 0);
+        assertEquals(0, testTrie.size());
         assertFalse(testTrie.contains("address"));
 
         assertTrue(testTrie.add("address"));
         assertTrue(testTrie.contains("address"));
-        assertEquals(testTrie.size(), 1);
+        assertEquals(1, testTrie.size());
 
         assertFalse(testTrie.add("address"));
 
         for (int i = 1; i < stringsForTest.length; i++) {
             assertTrue(testTrie.add(stringsForTest[i]));
-            assertEquals(testTrie.size(), i + 1);
+            assertEquals(i + 1, testTrie.size());
         }
 
-        for (int i = 0; i < stringsForTest.length; i++) {
-            assertTrue(testTrie.contains(stringsForTest[i]));
-            assertFalse(testTrie.add(stringsForTest[i]));
+        for (String aStringsForTest : stringsForTest) {
+            assertTrue(testTrie.contains(aStringsForTest));
+            assertFalse(testTrie.add(aStringsForTest));
         }
 
-        assertEquals(testTrie.size(), stringsForTest.length);
+        assertEquals(stringsForTest.length, testTrie.size());
     }
 
     @Test
-    // contains - remove - contains - size
-    public void test2() {
-        assertEquals(testTrie.size(), stringsForTest.length);
+    public void ContainsRemoveContainsSizeTest() {
+
+        assertEquals(stringsForTest.length, testTrie.size());
 
         for (int i = 0; i < stringsForTest.length; i++) {
             assertTrue(testTrie.contains(stringsForTest[i]));
             assertTrue(testTrie.remove(stringsForTest[i]));
             assertFalse(testTrie.contains(stringsForTest[i]));
-            assertEquals(testTrie.size(), 10 - i);
+            assertEquals(10 - i, testTrie.size());
         }
-        assertEquals(testTrie.size(), 0);
+        assertEquals(0, testTrie.size());
 
         assertTrue(testTrie.add("abc"));
         assertTrue(testTrie.add("ab"));
         assertTrue(testTrie.contains("abc"));
         assertTrue(testTrie.contains("ab"));
-        assertEquals(testTrie.size(), 2);
+        assertEquals(2, testTrie.size());
         assertTrue(testTrie.remove("abc"));
         assertTrue(testTrie.contains("ab"));
         assertTrue(testTrie.remove("ab"));
-        assertEquals(testTrie.size(), 0);
+        assertEquals(0, testTrie.size());
+
     }
 
     @Test
-    // prefix - add - prefix
-    public void test3() {
-        assertEquals(testTrie.howManyStartsWithPrefix("a"), 0);
-        assertEquals(testTrie.howManyStartsWithPrefix("grand"), 0);
-        assertEquals(testTrie.howManyStartsWithPrefix("to"), 0);
-        assertEquals(testTrie.howManyStartsWithPrefix("oo"), 0);
+    public void NumOfPrefixAddPrefixTest() {
 
-        for (int i = 0; i < stringsForPrefix.length; i++) {
-            assertTrue(testTrie.add(stringsForPrefix[i]));
+        assertEquals(0, testTrie.howManyStartsWithPrefix("a"));
+        assertEquals(0, testTrie.howManyStartsWithPrefix("grand"));
+        assertEquals(0, testTrie.howManyStartsWithPrefix("to"));
+        assertEquals(0, testTrie.howManyStartsWithPrefix("oo"));
+
+        for (String aStringsForPrefix : stringsForPrefix) {
+            assertTrue(testTrie.add(aStringsForPrefix));
         }
 
-        assertEquals(testTrie.howManyStartsWithPrefix("a"), 3);
-        assertEquals(testTrie.howManyStartsWithPrefix("grand"), 3);
-        assertEquals(testTrie.howManyStartsWithPrefix("to"), 3);
-        assertEquals(testTrie.howManyStartsWithPrefix("oo"), 0);
+        assertEquals(3, testTrie.howManyStartsWithPrefix("a"));
+        assertEquals(3, testTrie.howManyStartsWithPrefix("grand"));
+        assertEquals(3, testTrie.howManyStartsWithPrefix("to"));
+        assertEquals(0, testTrie.howManyStartsWithPrefix("oo"));
 
-        for (int i = 0; i < stringsForPrefix.length; i++) {
-            assertFalse(testTrie.add(stringsForPrefix[i]));
+        for (String aStringsForPrefix : stringsForPrefix) {
+            assertFalse(testTrie.add(aStringsForPrefix));
         }
 
-        assertEquals(testTrie.howManyStartsWithPrefix("a"), 3);
-        assertEquals(testTrie.howManyStartsWithPrefix("grand"), 3);
-        assertEquals(testTrie.howManyStartsWithPrefix("to"), 3);
-        assertEquals(testTrie.howManyStartsWithPrefix("oo"), 0);
+        assertEquals(3, testTrie.howManyStartsWithPrefix("a"));
+        assertEquals(3, testTrie.howManyStartsWithPrefix("grand"));
+        assertEquals(3, testTrie.howManyStartsWithPrefix("to"));
+        assertEquals(0, testTrie.howManyStartsWithPrefix("oo"));
 
         assertTrue(testTrie.remove("grandparents"));
-        assertEquals(testTrie.howManyStartsWithPrefix("grand"), 2);
+        assertEquals(2, testTrie.howManyStartsWithPrefix("grand"));
         assertTrue(testTrie.remove("grandmother"));
         assertTrue(testTrie.remove("grandfather"));
-        assertEquals(testTrie.howManyStartsWithPrefix("grand"), 0);
+        assertEquals(0, testTrie.howManyStartsWithPrefix("grand"));
     }
 
 }

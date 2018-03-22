@@ -4,7 +4,7 @@ public class Node {
 
     private boolean terminalState = false;
     private int stringsCount = 0;
-    private Node[] next;
+    final private Node[] next;
 
     Node() {
         next = new Node[26];
@@ -22,17 +22,15 @@ public class Node {
     }
 
     public void setTerminalState(boolean state) {
+        stringsCount += 1;
         terminalState = state;
     }
 
-    public void setState(char letter, boolean adding) {
-        if(adding) {
-            if(next[getIndex(letter)] == null) {
-                next[getIndex(letter)] = new Node();
-                return;
+    public void addState(char letter) {
+        int ix = getIndex(letter);
+            if (next[ix] == null) {
+                next[ix] = new Node();
             }
-        }
-        next[getIndex(letter)] = null;
     }
 
     public Node getNextNode(char letter) {
@@ -41,7 +39,7 @@ public class Node {
 
     public void changeStringsCount(int number) {
         stringsCount += number;
-        if(stringsCount < 0) {
+        if (stringsCount < 0) {
             stringsCount = 0;
         }
     }
@@ -51,9 +49,10 @@ public class Node {
     }
 
     public boolean checkAndDeleteNextNode(char letter){
-        Node nextNode = next[getIndex(letter)];
-        if(nextNode != null && nextNode.stringsCount == 0 && !nextNode.isTerminal()) {
-            next[getIndex(letter)] = null;
+        int ix = getIndex(letter);
+        Node nextNode = next[ix];
+        if (nextNode != null && nextNode.stringsCount == 0 && !nextNode.isTerminal()) {
+            next[ix] = null;
             return true;
         }
         return false;
