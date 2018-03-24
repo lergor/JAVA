@@ -2,11 +2,11 @@ package ru.spbau.mit.trie;
 
 public class TrieImpl implements Trie {
 
-    private static Node root = new Node();
+    private Node root = new Node();
 
     @Override
     public boolean add(String element) {
-        if (element.length() > 0) {
+        if (!element.isEmpty()) {
             Node lastLetterNode = goToNode(element, true);
             if (lastLetterNode.isTerminal()) {
                 return false;
@@ -72,6 +72,7 @@ public class TrieImpl implements Trie {
             currentNode = currentNode.getNextNode(letter);
         }
         currentNode.setTerminalState(adding);
+        currentNode.changeStringsCount(1);
     }
 
     private void checkAndDelete(String element) {

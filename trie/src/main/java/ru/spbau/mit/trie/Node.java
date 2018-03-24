@@ -22,7 +22,6 @@ public class Node {
     }
 
     public void setTerminalState(boolean state) {
-        stringsCount += 1;
         terminalState = state;
     }
 
