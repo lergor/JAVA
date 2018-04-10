@@ -86,4 +86,61 @@ public class TrieImpl implements Trie {
         }
     }
 
+    private static class Node {
+
+        private boolean terminalState = false;
+        private int stringsCount = 0;
+        final private Node[] next;
+
+        Node() {
+            next = new Node[26];
+        }
+
+        private static int getIndex(char letter) {
+            if (letter >= 'a') {
+                return (letter - 'a');
+            }
+            return letter - 'A';
+        }
+
+        boolean isTerminal() {
+            return terminalState;
+        }
+
+        void setTerminalState(boolean state) {
+            terminalState = state;
+        }
+
+        void addState(char letter) {
+            int ix = getIndex(letter);
+            if (next[ix] == null) {
+                next[ix] = new Node();
+            }
+        }
+
+        Node getNextNode(char letter) {
+            return next[getIndex(letter)];
+        }
+
+        void changeStringsCount(int number) {
+            stringsCount += number;
+            if (stringsCount < 0) {
+                stringsCount = 0;
+            }
+        }
+
+        int strings() {
+            return stringsCount;
+        }
+
+        boolean checkAndDeleteNextNode(char letter){
+            int ix = getIndex(letter);
+            Node nextNode = next[ix];
+            if (nextNode != null && nextNode.stringsCount == 0 && !nextNode.isTerminal()) {
+                next[ix] = null;
+                return true;
+            }
+            return false;
+        }
+    }
 }
