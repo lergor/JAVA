@@ -1,6 +1,8 @@
 package ru.spbau.mit.trie;
 
-public class TrieImpl implements Trie {
+import java.io.*;
+
+public class TrieImpl implements Trie, StreamSerializable {
 
     private Node root = new Node();
 
@@ -86,14 +88,25 @@ public class TrieImpl implements Trie {
         }
     }
 
-    private static class Node {
+    @Override
+    public void serialize(OutputStream out) throws IOException {
+        root.serialize(out);
+    }
 
+    @Override
+    public void deserialize(InputStream in) throws IOException {
+        root.deserialize(in);
+    }
+
+    private static class Node implements StreamSerializable {
+
+        private static final int ALPHABET = 26;
         private boolean terminalState = false;
         private int stringsCount = 0;
         final private Node[] next;
 
         Node() {
-            next = new Node[26];
+            next = new Node[ALPHABET];
         }
 
         private static int getIndex(char letter) {
@@ -141,6 +154,33 @@ public class TrieImpl implements Trie {
                 return true;
             }
             return false;
+        }
+
+        @Override
+        public void serialize(OutputStream out) throws IOException {
+            DataOutputStream writer = new DataOutputStream(out);
+            writer.writeBoolean(terminalState);
+            for (int i = 0; i < 26; i++) {
+                if (next[i] != null) {
+                    writer.writeByte(i);
+                    next[i].serialize(out);
+                }
+            }
+            writer.writeByte(ALPHABET + 1);
+        }
+
+        @Override
+        public void deserialize(InputStream in) throws IOException {
+            DataInputStream reader = new DataInputStream(in);
+            terminalState = reader.readBoolean();
+            stringsCount = terminalState ? 1 : 0;
+            int nextIx = reader.readByte();
+            while (nextIx != ALPHABET + 1) {
+                next[nextIx] = new Node();
+                next[nextIx].deserialize(in);
+                stringsCount += next[nextIx].stringsCount;
+                nextIx = reader.readByte();
+            }
         }
     }
 }
