@@ -50,13 +50,37 @@ public class PredicateTest {
                 (Predicate.ALWAYS_FALSE.not().apply("Kek!"));
     }
 
+    private class MockPredicate<T> implements Predicate<T> {
+
+        private boolean wasUsed = false;
+        private Predicate<T> predicate;
+
+        MockPredicate(Predicate<T> predicate) {
+            this.predicate = predicate;
+        }
+
+        @Override
+        public Boolean apply(T argument) {
+            wasUsed = true;
+            return predicate.apply(argument);
+        }
+    }
+
     @Test
     public void testLaziness() {
-        Predicate<Object> isNull = Objects::isNull;
-        Predicate<Object> lazyTrue = Predicate.ALWAYS_TRUE.or(isNull);
+        MockPredicate<Object> isNull = new MockPredicate<>(Objects::isNull);
+
+        MockPredicate<Object> alwaysTrue = new MockPredicate<>(Predicate.ALWAYS_TRUE);
+        Predicate<Object> lazyTrue = alwaysTrue.or(isNull);
         assertThat(lazyTrue.apply(null)).isTrue();
-        Predicate<Object> lazyFalse = Predicate.ALWAYS_FALSE.and(isNull);
+        assertThat(alwaysTrue.wasUsed).isTrue();
+        assertThat(isNull.wasUsed).isFalse();
+
+        MockPredicate<Object> alwaysFalse = new MockPredicate<>(Predicate.ALWAYS_FALSE);
+        Predicate<Object> lazyFalse = alwaysFalse.and(isNull);
         assertThat(lazyFalse.apply(17)).isFalse();
+        assertThat(alwaysFalse.wasUsed).isTrue();
+        assertThat(isNull.wasUsed).isFalse();
     }
 
 }

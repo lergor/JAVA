@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.ArrayList;
 
 public final class Collections {
+
     private Collections(){}
 
     public static <P, R> Collection<R> map(Function1<? super P, ? extends R> func,

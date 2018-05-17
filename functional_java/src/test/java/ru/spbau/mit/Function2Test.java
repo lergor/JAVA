@@ -50,4 +50,5 @@ public class Function2Test {
         Function2<Integer, Integer, String> stringOfProduct = mult.compose(integerToString);
         assertThat(stringOfProduct.apply(2, 17)).isEqualTo("34");
     }
+
 }
