@@ -67,7 +67,8 @@ public final class SecondPartTasks {
     // Надо вычислить, чья общая длина произведений наибольшая.
     public static String findPrinter(Map<String, List<String>> compositions) {
         return compositions.entrySet().stream()
-                .max(Comparator.comparing(e -> String.join("", e.getValue()).length()))
+                .max(Comparator.comparing(e -> e.getValue().stream()
+                        .collect(Collectors.summarizingInt(String::length)).getSum()))
                 .map(Map.Entry::getKey).orElse("");
     }
 

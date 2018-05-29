@@ -1,17 +1,10 @@
 package ru.spbau.mit;
 
-import com.google.common.collect.ImmutableMap;
-import org.assertj.core.internal.Lists;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.Assert.fail;
 import static org.assertj.core.api.Assertions.*;
 
 public class SecondPartTasksTest {
@@ -32,7 +25,7 @@ public class SecondPartTasksTest {
                                               "string4 with just kek");
 
         assertThat(SecondPartTasks.findQuotes(
-                Arrays.asList("file.txt"), "kek"))
+                Collections.singletonList("file.txt"), "kek"))
                 .isEqualTo(expected);
     }
 
