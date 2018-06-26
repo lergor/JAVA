@@ -2,6 +2,11 @@ package ru.spbau.mit.trie;
 
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
@@ -98,6 +103,34 @@ public class TrieImplTest {
         assertTrue(testTrie.remove("grandmother"));
         assertTrue(testTrie.remove("grandfather"));
         assertEquals(0, testTrie.howManyStartsWithPrefix("grand"));
+
+        for (String aStringsForPrefix : stringsForPrefix) {
+            testTrie.remove(aStringsForPrefix);
+        }
+        assertEquals(0, testTrie.size());
     }
 
+    @Test
+    public void SerializeDeserialize() {
+        TrieImpl deserializedTrie = new TrieImpl();
+        for (String string : stringsForTest) {
+            assertTrue(testTrie.add(string));
+            assertTrue(testTrie.contains(string));
+        }
+        assertEquals(stringsForTest.length, testTrie.size());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            testTrie.serialize(outputStream);
+            InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+            deserializedTrie.deserialize(inputStream);
+            assertEquals(testTrie.size(), deserializedTrie.size());
+            for (String string : stringsForTest) {
+                assertTrue(deserializedTrie.contains(string));
+            }
+            assertEquals(3, testTrie.howManyStartsWithPrefix("to"));
+            assertEquals(3, deserializedTrie.howManyStartsWithPrefix("to"));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
